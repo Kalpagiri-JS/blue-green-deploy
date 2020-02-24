@@ -1,0 +1,18 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+Description: Sample Lambda Function Creation.
+
+Resources:
+    SampleLambda:
+        Type: "AWS::Serverless::Function"
+        Properties:
+            Role: "arn:aws:iam::765154140259:role/pricing-lambda-worker-dev"
+            CodeUri: ../sample-lambda-dev.zip
+            FunctionName: !Sub "sample-lambda-dev"
+            Handler: "lambda-function/lambda.handler"
+            Runtime: "nodejs10.x"
+            MemorySize: 128
+            Timeout: 240
+            Environment:
+                Variables:
+                    LOG_LEVEL: info

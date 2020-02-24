@@ -1,0 +1,25 @@
+version: 0.2
+
+env:
+  variables:
+    LOG_LEVEL: info
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 10
+
+  build:
+    commands:
+      - echo Build started at `date`
+      - npm install --production
+
+  pre_build:
+    commands:
+      - echo Pre Build Started at `date`
+      - bin/buildspec_prebuild.sh
+
+  post_build:
+    commands:
+      - echo Post Build Started at `date`
+      - bin/buildspec_postbuild.sh

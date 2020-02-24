@@ -1,0 +1,30 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+Description: Sample Code Build Creation.
+
+Resources:
+  CodeBuildProject:
+    Type: "AWS::CodeBuild::Project"
+    Properties:
+      Name: "lambda-cloud-formation"
+      Artifacts:
+        Location: pricing-qa
+        Type: S3
+      Environment:
+        ComputeType: BUILD_GENERAL1_SMALL
+        Image: aws/codebuild/amazonlinux2-x86_64-standard:1.0
+        Type: LINUX_CONTAINER
+        EnvironmentVariables:
+          - Name: GIT_BUILD_BRANCH_FILTER
+            Value: "develop"
+      ServiceRole: "arn:aws:iam::765154140259:role/service-role/codebuild-sample-cicd-lambda"
+      Source:
+          Type: GITHUB
+          Location: https://github.com/SasiNandhini/ci-cd.git
+          BuildSpec: cloudformation/buildspec-lambda.yml
+      TimeoutInMinutes: 30
+      Triggers:
+        Webhook: true
+        FilterGroups:
+          - - Type: EVENT
+              Pattern: PUSH
